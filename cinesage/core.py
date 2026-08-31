@@ -30,4 +30,5 @@ final_prompt=prompt.invoke({
 'format_instructions': parser.get_format_instructions()
 })
 response=model.invoke(final_prompt)
-print(response.content)
+movie_data=parser.parse(response.content)
+print(movie_data)
