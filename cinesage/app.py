@@ -7,66 +7,69 @@ import streamlit as st
 from langchain_mistralai import ChatMistralAI
 from langchain_core.prompts import ChatPromptTemplate
 
+from pydantic import BaseModel
+from typing import List, Optional
+
+from langchain_core.output_parsers import PydanticOutputParser
+
+
+# Pydantic Model
+
+class Movie(BaseModel):
+    title: str
+    release_year: Optional[int]
+    genre: List[str]
+    director: Optional[str]
+    cast: List[str]
+    rating: Optional[float]
+    summary: str
+
+
+# Parser
+
+parser = PydanticOutputParser(
+    pydantic_object=Movie
+)
+
 
 # Model
+
 model = ChatMistralAI(
     model_name="mistral-small-2506"
 )
 
 
 # Prompt
-prompt = ChatPromptTemplate.from_messages([
-    (
-        "system",
-        """
-You are an expert information extraction assistant.
 
-Your job is to extract useful and relevant information from the given text.
+prompt = ChatPromptTemplate.from_messages(
+    [
+        (
+            "system",
+            """
+Extract movie information from the paragraph.
 
-Extract the following information:
-- Title
-- Genre
-- Director
-- Cast / Main Characters
-- Release Date (if mentioned)
-- Main Topic
-- Setting / Location
-- Storyline / Plot
-- Important Events
-- Key Concepts
-- Themes and Messages
-- Overall Summary
-- Keywords
-
-Rules:
-- Extract only information present in the given text.
-- If any information is missing, mention "Not mentioned".
-- Do not make assumptions or add outside knowledge.
-- Keep the response clear and well organized.
+{format_instructions}
 """
-    ),
-    (
-        "human",
-        """
-Extract useful information from this paragraph:
-
-{paragraph}
-"""
-    )
-])
+        ),
+        (
+            "human",
+            "{paragraph}"
+        )
+    ]
+)
 
 
 # Streamlit UI
 
-st.title("🎬 CineSage - Information Extractor")
+st.title("🎬 Movie Information Extractor")
 
 st.write(
-    "Enter a movie paragraph and extract useful information using AI."
+    "Enter a movie paragraph and extract structured information using Mistral AI."
 )
 
 
 paragraph = st.text_area(
-    "Enter your paragraph:",
+    "Enter movie paragraph:",
     height=250
 )
 
@@ -77,13 +80,14 @@ if st.button("Extract Information"):
 
         final_prompt = prompt.invoke(
             {
-                "paragraph": paragraph
+                "paragraph": paragraph,
+                "format_instructions": parser.get_format_instructions()
             }
         )
 
         response = model.invoke(final_prompt)
 
-        st.subheader("Extracted Information")
+        st.subheader("Extracted Movie Details")
 
         st.write(response.content)
 
