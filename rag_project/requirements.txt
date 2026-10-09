@@ -1,0 +1,84 @@
+# ==============================
+# LLM PROVIDERS
+# ==============================
+
+openai
+mistralai
+
+# ==============================
+# RAG / ORCHESTRATION
+# ==============================
+
+langchain
+langchain-community
+langchain-openai
+langchain-mistralai
+langchain-chroma
+
+# ==============================
+# VECTOR DATABASE
+# ==============================
+
+chromadb
+
+# ==============================
+# DOCUMENT LOADERS
+# ==============================
+
+pypdf
+python-docx
+docx2txt
+unstructured
+
+# ==============================
+# TEXT PROCESSING
+# ==============================
+
+tiktoken
+
+# ==============================
+# EMBEDDINGS / ML
+# ==============================
+
+sentence-transformers
+numpy
+
+# ==============================
+# API / BACKEND
+# ==============================
+
+fastapi
+uvicorn
+python-multipart
+
+# ==============================
+# ENVIRONMENT VARIABLES
+# ==============================
+
+python-dotenv
+
+# ==============================
+# DATA VALIDATION
+# ==============================
+
+pydantic
+
+# ==============================
+# HTTP / API UTILITIES
+# ==============================
+
+requests
+httpx
+
+# ==============================
+# TESTING
+# ==============================
+
+pytest
+
+# ==============================
+# DEVELOPMENT / CODE QUALITY
+# ==============================
+
+black
+flake8
